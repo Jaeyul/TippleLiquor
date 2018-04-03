@@ -2,6 +2,9 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 /* Drop Tables */
 
+DROP TABLE IF EXISTS board_comment;
+DROP TABLE IF EXISTS board_hit_session;
+DROP TABLE IF EXISTS board_recommand_uino;
 DROP TABLE IF EXISTS image_file;
 DROP TABLE IF EXISTS bulletin_board;
 DROP TABLE IF EXISTS color_info;
@@ -10,16 +13,46 @@ DROP TABLE IF EXISTS room_info;
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS expose;
 DROP TABLE IF EXISTS Friends;
-DROP TABLE IF EXISTS menu;
 DROP TABLE IF EXISTS note;
-DROP TABLE IF EXISTS regeon;
 DROP TABLE IF EXISTS user_profile;
 DROP TABLE IF EXISTS user_info;
+DROP TABLE IF EXISTS icon_info;
+DROP TABLE IF EXISTS menu;
+DROP TABLE IF EXISTS regeon;
 
 
 
 
 /* Create Tables */
+
+CREATE TABLE board_comment
+(
+	bcNo int(15) unsigned NOT NULL AUTO_INCREMENT,
+	bcText varchar(1000) NOT NULL,
+	bNo int(15) unsigned NOT NULL,
+	bcRegDate datetime NOT NULL,
+	uiNo int unsigned NOT NULL,
+	PRIMARY KEY (bcNo)
+);
+
+
+CREATE TABLE board_hit_session
+(
+	hNo int(15) unsigned NOT NULL AUTO_INCREMENT,
+	hSessionId varchar(100) NOT NULL,
+	bNo int(15) unsigned NOT NULL,
+	PRIMARY KEY (hNo)
+);
+
+
+CREATE TABLE board_recommand_uino
+(
+	rNo int(15) unsigned NOT NULL AUTO_INCREMENT,
+	bNo int(15) unsigned NOT NULL,
+	uiNo int unsigned NOT NULL,
+	PRIMARY KEY (rNo)
+);
+
 
 CREATE TABLE bulletin_board
 (
@@ -27,9 +60,9 @@ CREATE TABLE bulletin_board
 	bName varchar(300) NOT NULL,
 	bContent text NOT NULL,
 	bRegDate datetime NOT NULL,
-	uiNo int unsigned NOT NULL,
 	bRecom int unsigned zerofill,
 	bHit int unsigned zerofill,
+	uiNo int unsigned NOT NULL,
 	PRIMARY KEY (bNo)
 );
 
@@ -80,6 +113,17 @@ CREATE TABLE Friends
 	FId varchar(30) NOT NULL,
 	uiNo int unsigned NOT NULL,
 	PRIMARY KEY (FNo)
+);
+
+
+CREATE TABLE icon_info
+(
+	iconNo int unsigned NOT NULL AUTO_INCREMENT,
+	iconName varchar(30) NOT NULL,
+	iconCode varchar(300) NOT NULL,
+	PRIMARY KEY (iconNo),
+	UNIQUE (iconName),
+	UNIQUE (iconCode)
 );
 
 
@@ -140,6 +184,7 @@ CREATE TABLE room_info
 	rRegDate datetime,
 	categoryNo int NOT NULL,
 	regeonNo int NOT NULL,
+	iconName varchar(30) NOT NULL,
 	PRIMARY KEY (rNo),
 	UNIQUE (rName)
 );
@@ -150,9 +195,10 @@ CREATE TABLE user_info
 	uiNo int unsigned NOT NULL AUTO_INCREMENT,
 	uiId varchar(30) NOT NULL,
 	uiPwd varchar(100) NOT NULL,
-	uiNickName varchar(100),
+	uiNickName varchar(100) NOT NULL,
 	uiEmail varchar(300),
 	uiRegDate datetime NOT NULL,
+	iconName varchar(30) NOT NULL,
 	PRIMARY KEY (uiNo),
 	UNIQUE (uiId)
 );
@@ -160,10 +206,11 @@ CREATE TABLE user_info
 
 CREATE TABLE user_in_room
 (
+	uirNo int unsigned NOT NULL AUTO_INCREMENT,
 	uiId varchar(30) NOT NULL,
 	rName varchar(50) NOT NULL,
-	UNIQUE (uiId),
-	UNIQUE (rName)
+	PRIMARY KEY (uirNo),
+	UNIQUE (uiId)
 );
 
 
@@ -180,6 +227,30 @@ CREATE TABLE user_profile
 
 
 /* Create Foreign Keys */
+
+ALTER TABLE board_comment
+	ADD FOREIGN KEY (bNo)
+	REFERENCES bulletin_board (bNo)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE board_hit_session
+	ADD FOREIGN KEY (bNo)
+	REFERENCES bulletin_board (bNo)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE board_recommand_uino
+	ADD FOREIGN KEY (bNo)
+	REFERENCES bulletin_board (bNo)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
 
 ALTER TABLE image_file
 	ADD FOREIGN KEY (bNo)
@@ -206,6 +277,22 @@ ALTER TABLE room_info
 
 
 ALTER TABLE room_info
+	ADD FOREIGN KEY (iconName)
+	REFERENCES icon_info (iconName)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE user_info
+	ADD FOREIGN KEY (iconName)
+	REFERENCES icon_info (iconName)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE room_info
 	ADD FOREIGN KEY (regeonNo)
 	REFERENCES regeon (regeonNo)
 	ON UPDATE RESTRICT
@@ -216,6 +303,22 @@ ALTER TABLE room_info
 ALTER TABLE user_in_room
 	ADD FOREIGN KEY (rName)
 	REFERENCES room_info (rName)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE board_comment
+	ADD FOREIGN KEY (uiNo)
+	REFERENCES user_info (uiNo)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE board_recommand_uino
+	ADD FOREIGN KEY (uiNo)
+	REFERENCES user_info (uiNo)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
