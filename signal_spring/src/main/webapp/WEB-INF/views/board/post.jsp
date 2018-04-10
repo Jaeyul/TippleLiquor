@@ -54,6 +54,19 @@
 			alert("로그인이 필요합니다");
 		}
 	}
+	
+	function boardExpose(bNo, uiNo) {
+		if (uiNo) {
+			var param = {
+				bNo : bNo,
+				uiNo : uiNo
+			};
+			var ajax = new AjaxUtil("/board/expose", param);
+			ajax.send(reloadCall);
+		} else {
+			alert("로그인이 필요합니다");
+		}
+	}
 
 	function commentDelete(bcNo,bNo) {
 		var isDelete = confirm("삭제 시 복구 되지 않습니다.");
@@ -119,7 +132,7 @@ h1 h2 h3 h4 {
 			<i class="thumbs up outline icon"></i>추천 : ${boardVO.bRecom}
 		</button>
 		<button class="ui labeled inverted yellow button icon"
-			onclick="boardExpose()">
+			onclick="boardExpose('${boardVO.bNo}','${loginUserInfoVO.uiNo}')">
 			<i class="exclamation icon"></i>신고
 		</button>
 		<div id='content' class="ui segment">

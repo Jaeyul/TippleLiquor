@@ -150,6 +150,9 @@ if(uri.indexOf("login")==-1 && uri.indexOf("signup")==-1 && user==null){
 function openRandom(){
 	$('#goRandom').modal('show');	
 }
+
+
+
 function setChecked(id){	
 	var rRSizes;	
 	for(var i=2;i<=6;i++){		
@@ -158,6 +161,7 @@ function setChecked(id){
 	}	
 	document.getElementById(id).checked = true;	
 }
+
 function inRandomChat(){
 	var param = {};
 	var rRSize;
@@ -172,6 +176,7 @@ function inRandomChat(){
 	var au = new AjaxUtil("random/check",param);
 	au.send(matchingCallback);	
 }
+
 function matchingCallback(res){
 	var waitTime = res.waitTime;
 	if(res.biz){			
@@ -190,11 +195,15 @@ function matchingCallback(res){
 			$("#loadingW").modal('hide');			
 		}, 4000);						
 	}
+	
+	
 }
 
 function movePage(){		
 	location.href="/myfriends";
 }
+
+
 
 </script>
 <body>
@@ -227,7 +236,7 @@ function movePage(){
 							<div class="text" id="myPageBt">My Page</div>
 							<div class="menu" id="dropBt">
 								<div class="item">My Profile</div>
-								<div class="item" onclick="movePage()">My Friends</div>
+								<div class="item" onclick="movePage()"><i class="icon users"></i>My Friends<div class="floating ui red label">${acceptSize}</div></div>
 								<div class="item">My Post</div>
 								<div class="item">History</div>
 							</div>							

@@ -30,7 +30,8 @@ public class RoomInfoController {
 	@RequestMapping(value="/check", method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> checkRoomName(@RequestBody Map<String,Object> rNameMap){
 		
-		ris.setRoomInfo(rNameMap);			
+		ris.setRoomInfo(rNameMap);	
+		
 		return rNameMap;
 	}
 	

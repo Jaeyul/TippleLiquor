@@ -97,7 +97,10 @@ public class RandomRoomInfoController {
 		rMap.put("biz", false);
 		if(result==1) {
 			rMap.put("biz", true);			
-		}
+		}		
+		
 		return rMap;
 	}
+	
+
 }

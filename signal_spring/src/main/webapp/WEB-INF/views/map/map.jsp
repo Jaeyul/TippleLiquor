@@ -116,7 +116,7 @@ function openMap(){
 function openWindow(){
 	$('#categoryNo').dropdown();
 	$('#rSize').dropdown();
-	$('#makeRoomW').modal('show');	
+	$('#makeRoomW').modal('setting', 'closable', false).modal('show');	
 }
 
 function checkRoomInfo(){
@@ -326,6 +326,7 @@ function joinRoom(id){
 	  			<input type="text" placeholder="RoomName" id="rName" name="rName" required>
 			</div>
 			<br><br>
+			
 	    	카테고리:&emsp; 
 	    	<select name="categoryNo" class="ui dropdown" name="categoryNo" id="categoryNo" required>
 			  <option value="">Category</option>			  
@@ -334,6 +335,7 @@ function joinRoom(id){
 			  </c:forEach>	  	  
 			</select>			
 			<br><br>
+			
 			방사이즈:&emsp;
 	    	<select name="rSize" class="ui dropdown" id="rSize" name="rSize" required>
 			  <option value="">Size</option>
@@ -344,13 +346,19 @@ function joinRoom(id){
 			  <option value=6>6</option>
 			</select>
 			<br><br>
+			
 			태&emsp;그&emsp;:&emsp;
 	    	<div class="ui input">
 	  			<input type="text" placeholder="Tag" id="rTag" name="rTag">
 			</div>
+			
 			<input type="hidden" name="regeonName" id="regeonName">
+			
+			
 		</form>
+		
 	</div>
+	
 	<div class="actions">
 		<div class="ui red basic cancel inverted button">
 			<i class="remove icon"></i>
