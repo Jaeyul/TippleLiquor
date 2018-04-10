@@ -1,19 +1,24 @@
 package com.iot.test.vo;
 
+import javax.inject.Named;
+
+@Named
 public class BoardVO {
-	private Integer bNo;
+	private int bNo;
 	private String bName;
 	private String bContent;
 	private String bRegDate;
-	private String uiId;
+	private String uiNickName;
 	private int bHit;
 	private int bRecom;
+	//게시물의 댓글 총 수
+	private int bCommentCount;
 
-	public Integer getbNo() {
+	public int getbNo() {
 		return bNo;
 	}
 
-	public void setbNo(Integer bNo) {
+	public void setbNo(int bNo) {
 		this.bNo = bNo;
 	}
 
@@ -41,12 +46,12 @@ public class BoardVO {
 		this.bRegDate = bRegDate;
 	}
 
-	public String getUiId() {
-		return uiId;
+	public String getUiNickName() {
+		return uiNickName;
 	}
 
-	public void setUiId(String uiId) {
-		this.uiId = uiId;
+	public void setUiNickName(String uiNickName) {
+		this.uiNickName = uiNickName;
 	}
 
 	public int getbHit() {
@@ -65,10 +70,19 @@ public class BoardVO {
 		this.bRecom = bRecom;
 	}
 
+	public int getbCommentCount() {
+		return bCommentCount;
+	}
+
+	public void setbCommentCount(int bCommentCount) {
+		this.bCommentCount = bCommentCount;
+	}
+
 	@Override
 	public String toString() {
 		return "BoardVO [bNo=" + bNo + ", bName=" + bName + ", bContent=" + bContent + ", bRegDate=" + bRegDate
-				+ ", uiId=" + uiId + ", bHit=" + bHit + ", bRecom=" + bRecom + "]";
+				+ ", uiNickName=" + uiNickName + ", bHit=" + bHit + ", bRecom=" + bRecom + ", bCommentCount="
+				+ bCommentCount + "]";
 	}
 
 }

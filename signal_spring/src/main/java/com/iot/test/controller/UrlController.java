@@ -1,5 +1,8 @@
 package com.iot.test.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.iot.test.mapper.CategoryMapper;
 import com.iot.test.mapper.ColorInfoMapper;
+import com.iot.test.mapper.FriendsMapper;
 import com.iot.test.mapper.RegeonMapper;
 import com.iot.test.service.RoomInfoService;
 import com.iot.test.service.UserInRoomService;
@@ -38,6 +42,9 @@ public class UrlController {
 	
 	@Autowired
 	private UserInRoomService uirs;
+	
+	@Autowired
+	private FriendsMapper fm;
 	
 	@RequestMapping("/")
 	public String index() {
@@ -114,16 +121,30 @@ public class UrlController {
 	}
 	
 	@RequestMapping("/myfriends")
-	public String goMyFriends() {
+	public ModelAndView goMyFriends(HttpSession hs) {
+		int idx = 0;
+		ModelAndView mav = new ModelAndView();
+		String uiId = ((UserInfoVO) hs.getAttribute("user")).getUiId();		
 		
-		return "mypage/myfriends";
+		List<Map<String,Object>> friendsList = fm.selectFriendsListByUiId(uiId);
 		
-	}
-	@RequestMapping("/myprofile")
-	public String goMyProfile() {
-		
-		return "mypage/myprofile";
-		
+		List<Map<String,Object>> friendsTargetList = fm.selectFriendsListByUiIdAsFId(uiId);
+		for(int i=0; i<friendsTargetList.size(); i++) {
+			String myId = (String) friendsTargetList.get(i).get("fId");
+			String otherId = (String) friendsTargetList.get(i).get("uiId");
+			Map<String,Object> fMap = new HashMap<String,Object>();
+			fMap.put("uiId", myId);
+			fMap.put("fId", otherId);	
+			if(fm.selectFriendsListCheck(fMap).size()==1) {
+				friendsTargetList.remove(i);				
+			}			
+		}
+				
+		mav.addObject("callList", friendsTargetList);		
+		mav.addObject("fList", friendsList);	
+				
+		mav.setViewName("mypage/myfriends");		
+		return mav;		
 	}
 
 }

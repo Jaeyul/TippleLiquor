@@ -120,19 +120,6 @@ if(uri.indexOf("login")==-1 && uri.indexOf("signup")==-1 && user==null){
 		*/
 		$('.ui.inverted.dropdown.button').dropdown();
  
-
- 
-		// fix menu when passed
-		$('.masthead').visibility({
-			once : false,
-			onBottomPassed : function() {
-				$('.fixed.menu').transition('fade in');
-			},
-			onBottomPassedReverse : function() {
-				$('.fixed.menu').transition('fade out');
-			}
-		});		
-
 		// create sidebar and attach to menu open
 		$('.ui.sidebar').sidebar('attach events', '.toc.item');
 
@@ -156,41 +143,66 @@ if(uri.indexOf("login")==-1 && uri.indexOf("signup")==-1 && user==null){
 			inText = inText.toLowerCase();
 			if(page.indexOf(inText)!=-1){
 				$("#myPageBt").html(forWrite);
-			}	
-			
-			
-			
+			}
 		}
-		
-		
-		
-	});
+	});	
 	
+function openRandom(){
+	$('#goRandom').modal('show');	
+}
+function setChecked(id){	
+	var rRSizes;	
+	for(var i=2;i<=6;i++){		
+		rRSizes = $("#rRSize"+i);
+		rRSizes.css("checked","");				
+	}	
+	document.getElementById(id).checked = true;	
+}
+function inRandomChat(){
+	var param = {};
+	var rRSize;
+	for(var i=2;i<=6;i++){		
+		rRSize = $("#rRSize"+i);
+		if(rRSize[0].checked==true){			
+			param = {"rRSize": rRSize.val()};
+		}
+	}	
+	$("#loadingW").modal('show');	
 	
+	var au = new AjaxUtil("random/check",param);
+	au.send(matchingCallback);	
+}
+function matchingCallback(res){
+	var waitTime = res.waitTime;
+	if(res.biz){			
+		$("#rRName").val(res.rRName);
+		$("#uiNickName").val(res.uiNickName);	
+		$('#resultMessage').html(res.msg);		
+		setTimeout(function(){			
+			$("#loadingW").modal('hide');
+			$("#goinRChat").submit();			
+		}, waitTime);	 
+	}
+	
+	else{
+		$('#resultMessage').html(res.msg);	
+		setTimeout(function(){			
+			$("#loadingW").modal('hide');			
+		}, 4000);						
+	}
+}
+
+function movePage(){		
+	location.href="/myfriends";
+}
+
 </script>
 <body>
-
-	<!-- Following Menu -->
-	<div id='headerMenu' class="ui large top fixed hidden menu">
-		<div class="ui container">
-			<a href="/home" class="item">Home</a> <a href="/map" class="item">Map</a>
-			<a href="/random" class="item">Random</a> <a href="/board"
-				class="item">Board</a>
-			<div class="right menu">
-				<div class="item">
-					<a class="ui button">Log in</a>
-				</div>
-				<div class="item">
-					<a class="ui primary button">Sign Up</a>
-				</div>
-			</div>
-		</div>
-	</div>
 
 	<!-- Sidebar Menu -->
 	<div id="headerMenu" class="ui vertical inverted sidebar menu">
 		<a href="/home" class="item">Home</a> <a href="/map" class="item">Map</a>
-		<a href="/random" class="item">Random</a> <a href="/board"
+		<a href="/random" class="item">Random</a> <a href="/board?page=1&block=1"
 			class="item">Board</a> <a href="${(Log=='login')? '/login':'/user/logout'}" class="item">${(Log=='login')?'Login':'Logout'}</a> <a
 			href="/signup" class="item">Signup</a>
 	</div>
@@ -198,14 +210,14 @@ if(uri.indexOf("login")==-1 && uri.indexOf("signup")==-1 && user==null){
 	<div class='pusher'>
 		<div id="headerContent"
 			class="ui inverted vertical masthead center aligned segment"
-			style="background-image: url('/img/purple.jpg')">
+			style="background-image: url('/img/mainbg3.png'); background-position:center; background-repeat:no-repeat; background-size:cover">
 			<div class="ui container">
 				<div id='headerMenu'
 					class="ui large secondary inverted pointing menu"
 					style="border-style: none">
 					<a class="toc item"> <i class="sidebar icon"></i>
 					</a> <a href="/home" class="item">Home</a> <a href="/map" class="item">Map</a>
-					<a href="/random" class="item">Random</a> <a href="/board"
+					<a class="item" onclick="openRandom()" style="display:${(Log=='login')?'none':''};">Random</a> <a href="/board?page=1&block=1"
 						class="item">Board</a>
 					<div class="right item">
 						<a href="${(Log=='login')? '/login':'/user/logout'}" class="ui inverted button">${(Log=='login')?'Log in':'Log out'}</a> 
@@ -215,18 +227,93 @@ if(uri.indexOf("login")==-1 && uri.indexOf("signup")==-1 && user==null){
 							<div class="text" id="myPageBt">My Page</div>
 							<div class="menu" id="dropBt">
 								<div class="item">My Profile</div>
-								<div class="item" >My Friends</div>
+								<div class="item" onclick="movePage()">My Friends</div>
 								<div class="item">My Post</div>
 								<div class="item">History</div>
 							</div>							
 						</div>	
-						
-						
 					</div>	
 				</div>
 			</div>
 		</div>
 	</div>
+	
+	
+<div class="ui basic modal" id="goRandom" style="border-style: solid;">
+  <div class="ui icon header">
+    <i class="handshake outline icon"></i>    
+  </div>
+  
+  <div class="content" style="width:600; margin:auto">
+   <form action="random/chat" id="goinRChat" >
+			<div class="ui form" >
+			
+			  <div class="grouped fields">
+			    <label style="color:white"><h2>&emsp;&emsp;&ensp;How many do you want to chat to people</h2></label>
+			    <br>			    
+			    <div class="field" style="margin-left:100">
+			      <div class="ui radio checkbox">
+			        <input type="radio" id="rRSize2" name="rRSize" value="2" onclick="setChecked(id)" checked>
+			        <label style="color:white">&emsp;With Two People</label>
+			      </div>
+			    </div>			  
+			    <div class="field" style="margin-left:100">
+			      <div class="ui radio checkbox">
+			        <input type="radio" id="rRSize3" name="rRSize" value="3" onclick="setChecked(id)">
+			        <label style="color:white">&emsp;With Three People</label>
+			      </div>
+			    </div>
+			    <div class="field" style="margin-left:100">
+			      <div class="ui radio checkbox">
+			        <input type="radio" id="rRSize4" name="rRSize" value="4" onclick="setChecked(id)">
+			        <label style="color:white">&emsp;With Four People</label>
+			      </div>
+			    </div>
+			    <div class="field" style="margin-left:100">
+			      <div class="ui radio checkbox">
+			        <input type="radio" id="rRSize5" name="rRSize" value="5" onclick="setChecked(id)">
+			        <label style="color:white">&emsp;With Five People</label>
+			      </div>
+			    </div>
+			    <div class="field" style="margin-left:100">
+			      <div class="ui radio checkbox">
+			        <input type="radio" id="rRSize6" name="rRSize" value="6" onclick="setChecked(id)">
+			        <label style="color:white">&emsp;With Six People</label>
+			      </div>
+			    </div>
+			  </div>			  
+			</div>
+			
+			<input type="hidden" id="rRName" name="rRName">
+			<input type="hidden" id="uiNickName" name="uiNickName">
+	</form>
+  </div>
+  
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i>
+      No
+    </div>
+    <div class="ui green ok inverted button" onclick="inRandomChat()">
+      <i class="checkmark icon"></i>
+      Yes
+    </div>
+  </div>  
+</div>
+
+
+<div class="ui basic modal" id="loadingW"> 
+
+	<div class="content" style="width:600; margin:auto">
+	 <label style="color:white;text-align: center;"><h2 id="resultMessage">Loading</h2></label>
+	 </div> 
+	<br>
+     <div class="ui large text loader"></div>
+     
+  
+</div>
+
+
 </body>
 
 

@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS expose;
 DROP TABLE IF EXISTS Friends;
 DROP TABLE IF EXISTS note;
+DROP TABLE IF EXISTS random_room_info;
 DROP TABLE IF EXISTS user_profile;
 DROP TABLE IF EXISTS user_info;
 DROP TABLE IF EXISTS icon_info;
@@ -31,8 +32,9 @@ CREATE TABLE board_comment
 	bcText varchar(1000) NOT NULL,
 	bNo int(15) unsigned NOT NULL,
 	bcRegDate datetime NOT NULL,
-	uiNo int unsigned NOT NULL,
-	PRIMARY KEY (bcNo)
+	uiNickName varchar(100) NOT NULL,
+	PRIMARY KEY (bcNo),
+	UNIQUE (uiNickName)
 );
 
 
@@ -62,8 +64,9 @@ CREATE TABLE bulletin_board
 	bRegDate datetime NOT NULL,
 	bRecom int unsigned zerofill,
 	bHit int unsigned zerofill,
-	uiNo int unsigned NOT NULL,
-	PRIMARY KEY (bNo)
+	uiNickName varchar(100) NOT NULL,
+	PRIMARY KEY (bNo),
+	UNIQUE (uiNickName)
 );
 
 
@@ -166,6 +169,16 @@ CREATE TABLE note
 );
 
 
+CREATE TABLE random_room_info
+(
+	rRNo int unsigned NOT NULL AUTO_INCREMENT,
+	rRSize int unsigned NOT NULL,
+	rRName varchar(100) NOT NULL,
+	uiNickName varchar(100) NOT NULL,
+	PRIMARY KEY (rRNo)
+);
+
+
 CREATE TABLE regeon
 (
 	regeonNo int NOT NULL AUTO_INCREMENT,
@@ -200,7 +213,8 @@ CREATE TABLE user_info
 	uiRegDate datetime NOT NULL,
 	iconName varchar(30) NOT NULL,
 	PRIMARY KEY (uiNo),
-	UNIQUE (uiId)
+	UNIQUE (uiId),
+	UNIQUE (uiNickName)
 );
 
 
@@ -209,8 +223,7 @@ CREATE TABLE user_in_room
 	uirNo int unsigned NOT NULL AUTO_INCREMENT,
 	uiId varchar(30) NOT NULL,
 	rName varchar(50) NOT NULL,
-	PRIMARY KEY (uirNo),
-	UNIQUE (uiId)
+	PRIMARY KEY (uirNo)
 );
 
 
@@ -309,8 +322,8 @@ ALTER TABLE user_in_room
 
 
 ALTER TABLE board_comment
-	ADD FOREIGN KEY (uiNo)
-	REFERENCES user_info (uiNo)
+	ADD FOREIGN KEY (uiNickName)
+	REFERENCES user_info (uiNickName)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
@@ -325,6 +338,14 @@ ALTER TABLE board_recommand_uino
 
 
 ALTER TABLE bulletin_board
+	ADD FOREIGN KEY (uiNickName)
+	REFERENCES user_info (uiNickName)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE expose
 	ADD FOREIGN KEY (uiNo)
 	REFERENCES user_info (uiNo)
 	ON UPDATE RESTRICT
@@ -334,14 +355,6 @@ ALTER TABLE bulletin_board
 
 ALTER TABLE expose
 	ADD FOREIGN KEY (targetUiNo)
-	REFERENCES user_info (uiNo)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE expose
-	ADD FOREIGN KEY (uiNo)
 	REFERENCES user_info (uiNo)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -357,7 +370,7 @@ ALTER TABLE Friends
 
 
 ALTER TABLE note
-	ADD FOREIGN KEY (uiNo)
+	ADD FOREIGN KEY (targetUiNo)
 	REFERENCES user_info (uiNo)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -365,8 +378,16 @@ ALTER TABLE note
 
 
 ALTER TABLE note
-	ADD FOREIGN KEY (targetUiNo)
+	ADD FOREIGN KEY (uiNo)
 	REFERENCES user_info (uiNo)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE random_room_info
+	ADD FOREIGN KEY (uiNickName)
+	REFERENCES user_info (uiNickName)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;

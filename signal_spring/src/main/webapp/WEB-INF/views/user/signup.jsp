@@ -13,7 +13,7 @@
     }
     .image {
       margin-top: -100px;
-    }
+    }   
     .column {
       max-width: 450px;
     }
@@ -158,7 +158,7 @@ function reChCursor(){
 }
 
 function openIconBox(){
-	$('.ui.modal').modal('show');	
+	$('#choiceIconBox').modal('show');	
 }
 
 function getIcon(){
@@ -219,10 +219,7 @@ function checkVal(id){
 <br><br><br><br><br>
 <div class="ui middle aligned center aligned grid">
   <div class="column">
-    <h2 class="ui pink image header">
-     	Sign-up      
-    </h2>    
-    
+    <img class="ui logo image" id="tippleLogo" src="/img/tippler2.png" >    
     <form class="ui large form">
         
       <div class="ui stacked segment">
@@ -271,27 +268,18 @@ function checkVal(id){
             <i class="large hand point up outline icon" id="iconCheck"></i>
             </div>
           </div>          
-        </div>
-         
-         
-         
+        </div>  
         
-        <div class="ui fluid large pink submit button" onclick="signup()"> Sign-Up</div>
+        <div class="ui fluid large magenta submit button" onclick="signup()"> Sign-Up</div>
       </div>      
       
     </form>    
   </div>
-  
-  
-  
-  
-  
-  
-  
 </div>
 
-<div class="ui modal" > 
-  
+</div>
+
+<div class="ui modal" id="choiceIconBox" >   
   <div class="header">
     Icon Choice
   </div>
@@ -313,23 +301,10 @@ function checkVal(id){
     
     <div class="ui black deny button" id="no" onclick="checkVal(id)">
       Nope
-    </div>    
-   
-  </div>
-  
+    </div>   
+  </div>  
 </div>
 
-
-
-
-
-
-
-
-
-
-
-</div>
 </body>
 
 </html>

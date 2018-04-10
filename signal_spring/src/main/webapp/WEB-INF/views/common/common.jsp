@@ -5,6 +5,10 @@
 <c:set var="root" value="${pageContext.request.contextPath}" />
 <c:set var="ver" value="?version=1.0.0" />
 
+<%
+	String sessionId = (String)session.getId();
+%>
+
 <c:set var="isLogin" value="${(empty sessionScope.user)?false:true}" />
 <c:set var="Log" value="${(empty sessionScope.user)?'login':'logout'}" />
 
@@ -18,6 +22,7 @@
 <script src="/js/components/modal.js"></script>
 <script src="/js/components/accordion.js"></script>
 <script src="/js/components/shape.js"></script>
+<script src="/js/components/checkbox.js"></script>
 <script src="/js/common.js"></script>
 <script src="/js/map/d3.v3.min.js"></script>
 <script src="/js/map/topojson.v0.min.js"></script>
@@ -53,9 +58,8 @@
 
 <link rel="stylesheet" type="text/css" href="/css/components/accordion.css">
 <link rel="stylesheet" type="text/css" href="/css/components/shape.css">
-
-<link rel="stylesheet" type="text/css"
-	href="/css/components/accordion.css">
-
+<link rel="stylesheet" type="text/css" href="/css/components/checkbox.css">
+<link rel="stylesheet" type="text/css" href="/css/components/loader.css">
+<link rel="stylesheet" type="text/css" href="/css/components/card.css">
 
 <%@ include file="/WEB-INF/views/common/header.jsp"%>

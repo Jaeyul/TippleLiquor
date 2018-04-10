@@ -32,20 +32,38 @@ function Participant(name) {
 	container.className = isPresentMainParticipant() ? PARTICIPANT_CLASS : PARTICIPANT_MAIN_CLASS;
 	container.id = name;
 	var span = document.createElement('span');
+	var div = document.createElement('div');
+	div.setAttribute('id','kos' + this.name);
+	
 	var video = document.createElement('video');
 	var rtcPeer;
 
 	container.appendChild(video);
 	container.appendChild(span);
-	container.onclick = switchContainerClass;
+	container.appendChild(div);
+	
+	var dropDownStr = "";	
+	dropDownStr += "<div id='sub" + this.name + "' class='ui inverted dropdown button'>";
+	dropDownStr += "<div class='text'>"+ name + "</div>";
+	dropDownStr += "<div class='menu'>";
+	dropDownStr += "<div class='item' id='click" + this.name +"' onclick='alramId(id)'>Add Friend</div>";
+	dropDownStr += "<div class='item'>Etc</div></div></div>";
+	
+	
+	//container.onclick = switchContainerClass;
+	
 	document.getElementById('participants').appendChild(container);
-
 	span.appendChild(document.createTextNode(name));
-
+	
+	$('#kos' + this.name).html(dropDownStr);
+	$('#sub' + this.name).dropdown();	
+	
+	
 	video.id = 'video-' + name;
 	video.autoplay = true;
-	video.controls = false;
+	video.controls = false;		
 
+	
 
 	this.getElement = function() {
 		return container;

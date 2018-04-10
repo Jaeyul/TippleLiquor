@@ -30,16 +30,14 @@ public class RoomInfoController {
 	@RequestMapping(value="/check", method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> checkRoomName(@RequestBody Map<String,Object> rNameMap){
 		
-		ris.setRoomInfo(rNameMap);	
-		
+		ris.setRoomInfo(rNameMap);			
 		return rNameMap;
 	}
 	
 	@RequestMapping(value="/all", method=RequestMethod.POST)
 	public @ResponseBody List<Map<String, Object>> allRoom(@RequestBody Map<String,Object> regeonMap){
 		
-		List<Map<String, Object>> allRoomList = ris.searchAllRoom(regeonMap);
-		log.info("확인보장아하하하=>",allRoomList);
+		List<Map<String, Object>> allRoomList = ris.searchAllRoom(regeonMap);		
 		
 		for(Map<String, Object> subRoomMap : allRoomList) {
 			int result = uirm.selectUserInRoomCount(subRoomMap);

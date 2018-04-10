@@ -1,6 +1,7 @@
 package com.iot.test.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,9 +15,8 @@ public interface UserInfoMapper {
 	
 	List<UserInfoVO> selectUserList(UserInfoVO ui);
 	
-//	@Select("select uiNo,uiId,uiPwd,uiNickName,uiEmail,uiRegDate "
-//			+ "from user_info where uiId = #{uiv.uiId} and uiPwd = #{uiv.uiPwd}")
-//	UserInfoVO selectUserForLogin(@Param("uiv")UserInfoVO uiv);
+	@Select("select uiId from user_info where uiNickName = #{uiNickName}")
+	String selectUiIdForChat(String uiNickName);
 	
 	@Select("select uiNo,uiId,uiPwd,uiNickName,uiEmail,uiRegDate, iconName "
 			+ "from user_info where uiId = #{uiv.uiId} and uiPwd = #{uiv.uiPwd}")
@@ -25,6 +25,8 @@ public interface UserInfoMapper {
 	@Select("select uiId from user_info where uiId = #{uiv.uiId}")			
 	UserInfoVO selectUiId(@Param("uiv")UserInfoVO uiv);
 	
+	@Select("select uiNickName as fName, uiId as fId from user_info where uiId=#{fId}")
+	Map<String,Object> selectUserInfoToFriend(String fId);
 	
 	@Insert("insert into user_info(uiId,uiPwd,uiNickName,uiEmail,uiRegdate,iconName) "
 			+ "values(#{uiId},#{uiPwd},#{uiNickName},#{uiEmail},current_timestamp,#{iconName})")
