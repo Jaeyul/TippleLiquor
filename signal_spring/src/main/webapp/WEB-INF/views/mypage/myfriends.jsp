@@ -47,12 +47,7 @@ function remove(id){
 			location.href="/myfriends";
 		}
 	}
-	
 }
-
-
-
-
 function popUpFunc(){
 	$('.window.close.icon.link')
 	  .popup();	
@@ -84,10 +79,7 @@ function popUpFunc(){
   </div>
 </c:forEach>
 </div>
-
-
 <div style="width:20%; float:right">
-
 <c:forEach items="${callList}" var="callMap">
 <c:choose>
 	<c:when test="${callMap.count < 4}">

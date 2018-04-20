@@ -88,9 +88,7 @@ function openchat(){
 	$("#chatIcon").css("display","none");	
 	$("#chatSpace").css("display","");	
 	$('#chatSpace').animate({width: 430}, "slow");
-	//setTimeout(function(){ 
-				
-	//}, 1000);
+
 }
 function clopsechat(){
 	$('#chatSpace').animate({width: 0}, "slow");
@@ -112,13 +110,9 @@ function alramId(id){
 		au.send(checkAdd);
 	}
 }
-
-function checkAdd(res){
-	
-	alert(res);
+function checkAdd(res){	
+	alert(res.msg);
 }
-
-
 </script>
 </head>
 <body onload="register()">

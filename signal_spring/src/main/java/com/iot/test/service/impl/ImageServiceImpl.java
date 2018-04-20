@@ -37,7 +37,7 @@ public class ImageServiceImpl implements ImageService {
 	@Autowired
 	BoardRecommandServiceImpl boardRecommandService;
 
-	public static final String IMAGE_DIR = "src/main/resources/static/web/upload_images\\";
+	public static final String IMAGE_DIR = "/data/web_upload_img/";
 
 	@Override
 	public List<ImageVO> ImgList() {
@@ -79,10 +79,7 @@ public class ImageServiceImpl implements ImageService {
 			im.deleteImgByImgId(iv.getImgId());
 		}
 	}
-
-	/**
-	 * Multipart File을 파일로 저장하고 DB(를 빙자한 맵)에 업로드 파일 정보 저장, 실패하는 경우 null리
-	 */
+	
 	public ImageVO save(MultipartFile multipartFile, int bNo) {
 		// UUID로 유일할 것 같은 값 생성.. 낮은 확률로 중복 가능성이 있음
 		String genId = UUID.randomUUID().toString();

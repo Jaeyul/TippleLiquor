@@ -105,7 +105,6 @@ public class CallHandler extends TextWebSocketHandler {
           user.addCandidate(cand, jsonMessage.get("name").getAsString());
         }
         break;
-        
       case "sendMessage":   
     	  
     	  List<String> userList = uirm.selectUserInRoomUiIdForRName((String) map.get("name")); 
@@ -120,7 +119,6 @@ public class CallHandler extends TextWebSocketHandler {
     		}		  
     	  }    	  
     	break; 
-      
       case "randomSendMessage":    	 
     	List<String> nickNameList= (List<String>) map.get("nickNameList");
     	List<String> uiIdList = new ArrayList<String>();

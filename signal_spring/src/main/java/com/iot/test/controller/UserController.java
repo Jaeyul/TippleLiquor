@@ -47,10 +47,13 @@ public class UserController {
 	@RequestMapping("/signup")
     public @ResponseBody Map<String,Object> signup(@RequestBody UserInfoVO uiv) {
 		log.info("UserInfoVO=>{}", uiv);
-		Map<String,Object> resultMap = uis.insertUserInfo(uiv);
-		
+		Map<String,Object> resultMap = uis.insertUserInfo(uiv);		
         return resultMap;
     }
+	
+	
+	
+	
 	
 	@RequestMapping("/check")
     public @ResponseBody Map<String,Object> checkId(@RequestBody UserInfoVO uiv) {
